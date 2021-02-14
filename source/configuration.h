@@ -150,6 +150,17 @@
 #define TEMP_uV_LOOKUP_TS80
 #endif
 
+#ifdef MODEL_OtterIron
+#define VOLTAGE_DIV        650  // Default for TS80P with slightly different resistors
+#define PID_POWER_LIMIT    100   // Sets the max pwm power limit
+#define CALIBRATION_OFFSET 1500 // the adc offset in uV
+#define POWER_LIMIT        100   // 30 watts default power limit
+#define MAX_POWER_LIMIT    100   //
+#define POWER_LIMIT_STEPS  2
+#define OP_AMP_GAIN_STAGE  OP_AMP_GAIN_STAGE_TS80
+#define TEMP_uV_LOOKUP_HAKKO
+#endif
+
 #ifdef MODEL_TS100
 const int32_t tipMass       = 65; // X10 watts to raise 1 deg C in 1 second
 const uint8_t tipResistance = 75; // x10 ohms, 7.5 typical for ts100 tips
