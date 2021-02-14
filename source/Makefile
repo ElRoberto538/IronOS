@@ -29,16 +29,16 @@ BSP_INC_DIR = ./Core/BSP
 THREADS_INC_DIR = ./Core/Threads
 MINIWARE_INC_DIR = ./Core/BSP/Miniware
 PINE_INC_DIR = ./Core/BSP/Pine64
-OTTER_INC_DIR = ./Core/BSP/Otter-Iron
+OTTER_INC_DIR = ./Core/BSP/OtterIron
 PINE_VENDOR_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include
 PINE_BOARD_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Board/pinecil/Include
 PINE_VENDOR_USB_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include/Usb
 PINE_NMSIS_INC_DIR = ./Core/BSP/Pine64/Vendor/NMSIS/Core/Include
 PINE_FREERTOS_PORT_INC_DIR = ./Core/BSP/Pine64/Vendor/OS/FreeRTOS/Source/portable/GCC
-OTTER_IRON_INC_CMSIS_DEVICE = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Device/ST/STM32F0xx/Include
-OTTER_IRON_CMSIS_CORE_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Include
-OTTER_IRON_HAL_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/STM32F0xx_HAL_Driver/Inc
-OTTER_IRON_HAL_LEGACY_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/STM32F0xx_HAL_Driver/Inc/Legacy
+OTTER_IRON_INC_CMSIS_DEVICE = ./Core/BSP/OtterIron/Vendor/CMSIS/Device/ST/STM32F0xx/Include
+OTTER_IRON_CMSIS_CORE_INC_DIR = ./Core/BSP/OtterIron/Vendor/CMSIS/Include
+OTTER_IRON_HAL_INC_DIR = ./Core/BSP/OtterIron/Vendor/STM32F0xx_HAL_Driver/Inc
+OTTER_IRON_HAL_LEGACY_INC_DIR = ./Core/BSP/OtterIron/Vendor/STM32F0xx_HAL_Driver/Inc/Legacy
 SOURCE_THREADS_DIR = ./Core/Threads
 SOURCE_CORE_DIR = ./Core/Src
 SOURCE_DRIVERS_DIR = ./Core/Drivers
@@ -114,7 +114,7 @@ DEVICE_INCLUDES = -I$(OTTER_IRON_INC_DIR) \
 	-I$(OTTER_IRON_CMSIS_CORE_INC_DIR)	\
 	-I$(OTTER_IRON_HAL_INC_DIR)	\
 	-I$(OTTER_IRON_HAL_LEGACY_INC_DIR)
-DEVICE_BSP_DIR = ./Core/BSP/Otter-Iron
+DEVICE_BSP_DIR = ./Core/BSP/OtterIron
 S_SRCS := $(shell find $(STARTUP_DIR) -type f -name 'startup_stm32f0*.S')
 LDSCRIPT=STM32F072C8Tx_FLASH.ld
 DEV_GLOBAL_DEFS= -D STM32F072C8Tx -D STM32F0 -D STM32 -D USE_HAL_DRIVER -D DSTM32F072xB -D USE_RTOS_SYSTICK -D GCC_ARMCM0		\
