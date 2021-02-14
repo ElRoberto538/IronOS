@@ -11,16 +11,13 @@
  * Lookup for mapping features <-> Models
  */
 
-#elif defined(MODEL_TS80P) == 0
+#if defined(MODEL_OtterIron) == 0
 #error "No model defined!"
 #endif
 
 
-#ifdef MODEL_TS80P
-#define ACCEL_LIS
-#define ACCEL_MSA
+#ifdef MODEL_OtterIron
 #define POW_PD
-#define POW_QC
 #define TEMP_NTC
 #define I2C_SOFT
 #define LIS_ORI_FLIP

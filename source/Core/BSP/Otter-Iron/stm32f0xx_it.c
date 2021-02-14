@@ -1,14 +1,14 @@
 // This is the stock standard STM interrupt file full of handlers
-#include "stm32f1xx_it.h"
+#include "stm32f0xx_it.h"
 #include "Setup.h"
 #include "cmsis_os.h"
-#include "stm32f1xx.h"
-#include "stm32f1xx_hal.h"
+#include "stm32f0xx.h"
+#include "stm32f0xx_hal.h"
 
 extern TIM_HandleTypeDef htim1; // used for the systick
 
 /******************************************************************************/
-/*            Cortex-M3 Processor Interruption and Exception Handlers         */
+/*            Cortex-M0 Processor Interruption and Exception Handlers         */
 /******************************************************************************/
 
 void NMI_Handler(void) {}
@@ -31,7 +31,7 @@ void DebugMon_Handler(void) {}
 void SysTick_Handler(void) { osSystickHandler(); }
 
 /******************************************************************************/
-/* STM32F1xx Peripheral Interrupt Handlers                                    */
+/* STM32F0xx Peripheral Interrupt Handlers                                    */
 /* Add here the Interrupt Handlers for the used peripherals.                  */
 /* For the available peripheral interrupt handler names,                      */
 /* please refer to the startup file.					                      */

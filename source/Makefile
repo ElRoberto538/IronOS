@@ -35,7 +35,7 @@ PINE_BOARD_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Board/pinecil/Includ
 PINE_VENDOR_USB_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include/Usb
 PINE_NMSIS_INC_DIR = ./Core/BSP/Pine64/Vendor/NMSIS/Core/Include
 PINE_FREERTOS_PORT_INC_DIR = ./Core/BSP/Pine64/Vendor/OS/FreeRTOS/Source/portable/GCC
-OTTER_IRON_INC_CMSIS_DEVICE = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Device/ST/STM32F1xx/Include
+OTTER_IRON_INC_CMSIS_DEVICE = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Device/ST/STM32F0xx/Include
 OTTER_IRON_CMSIS_CORE_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Include
 OTTER_IRON_HAL_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/STM32F0xx_HAL_Driver/Inc
 OTTER_IRON_HAL_LEGACY_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/STM32F0xx_HAL_Driver/Inc/Legacy
@@ -109,7 +109,7 @@ endif
 
 ifeq ($(model),$(filter $(model),$(ALL_OTTER_IRON_MODELS)))
 $(info Building for Otter Iron )
-DEVICE_INCLUDES = -I$(MINIWARE_INC_DIR) \
+DEVICE_INCLUDES = -I$(OTTER_IRON_INC_DIR) \
 	-I$(OTTER_IRON_INC_CMSIS_DEVICE)\
 	-I$(OTTER_IRON_CMSIS_CORE_INC_DIR)	\
 	-I$(OTTER_IRON_HAL_INC_DIR)	\
