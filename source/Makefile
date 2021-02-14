@@ -29,7 +29,7 @@ BSP_INC_DIR = ./Core/BSP
 THREADS_INC_DIR = ./Core/Threads
 MINIWARE_INC_DIR = ./Core/BSP/Miniware
 PINE_INC_DIR = ./Core/BSP/Pine64
-OTTER_INC_DIR = ./Core/BSP/OtterIron
+OTTER_IRON_INC_DIR = ./Core/BSP/OtterIron
 PINE_VENDOR_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include
 PINE_BOARD_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Board/pinecil/Include
 PINE_VENDOR_USB_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include/Usb
@@ -107,7 +107,7 @@ DEV_CFLAGS= -MMD -MP -MF "$(@:%.o=%.d)" -MT "$@"
 DEV_CXXFLAGS= -MMD -MP -MF "$(@:%.o=%.d)" -MT "$@"
 endif
 
-ifeq ($(model),$(filter $(model),$(ALL_OTTER_IRON_MODELS)))
+ifeq ($(model),$(ALL_OTTER_IRON_MODELS))
 $(info Building for Otter Iron )
 DEVICE_INCLUDES = -I$(OTTER_IRON_INC_DIR) \
 	-I$(OTTER_IRON_INC_CMSIS_DEVICE)\
@@ -117,7 +117,7 @@ DEVICE_INCLUDES = -I$(OTTER_IRON_INC_DIR) \
 DEVICE_BSP_DIR = ./Core/BSP/OtterIron
 S_SRCS := $(shell find $(STARTUP_DIR) -type f -name 'startup_stm32f0*.S')
 LDSCRIPT=STM32F072C8Tx_FLASH.ld
-DEV_GLOBAL_DEFS= -D STM32F072C8Tx -D STM32F0 -D STM32 -D USE_HAL_DRIVER -D DSTM32F072xB -D USE_RTOS_SYSTICK -D GCC_ARMCM0		\
+DEV_GLOBAL_DEFS= -D STM32F072C8Tx -D STM32F0 -D STM32 -D USE_HAL_DRIVER -D STM32F072xB -D USE_RTOS_SYSTICK -D GCC_ARMCM0		\
 		-D ARM_MATH_CM0 	\
 		-D STM32F07X_MD
 DEV_LDFLAGS=-lm -Wl,--gc-sections 
@@ -125,7 +125,7 @@ DEV_AFLAGS=
 DEV_CFLAGS= -D GCC_ARMCM0		\
 		-D ARM_MATH_CM0 	\
 		-D STM32F07X_MD		
-DEV_CXXFLAGS= -D GCC_ARMCM3		\
+DEV_CXXFLAGS= -D GCC_ARMCM0		\
 		-D ARM_MATH_CM0 	\
 		-D STM32F07X_MD		
 CPUFLAGS= -mcpu=cortex-m0     \
