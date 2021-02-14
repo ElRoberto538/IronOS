@@ -1,6 +1,6 @@
-# BSP section for STM32F103 based Miniware products
+# BSP section for STM32F10xx based Otter Iron
 
-This folder contains the hardware abstractions required for the TS100, TS80 and probably TS80P soldering irons.
+This folder contains the hardware abstractions required for the Otter Iron.
 
 ## Main abstractions
 

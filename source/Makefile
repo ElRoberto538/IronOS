@@ -5,7 +5,9 @@ endif
 
 ALL_MINIWARE_MODELS=TS100 TS80 TS80P
 ALL_PINE_MODELS=Pinecil
-ALL_MODELS=$(ALL_MINIWARE_MODELS) $(ALL_PINE_MODELS)
+ALL_OTTER_IRON_MODELS=OtterIron
+ALL_MODELS=$(ALL_MINIWARE_MODELS) $(ALL_PINE_MODELS) $(ALL_OTTER_IRON_MODELS)
+ARM_MODELS=$(ALL_MINIWARE_MODELS) $(ALL_OTTER_IRON_MODELS)
 ifneq ($(model),$(filter $(model),$(ALL_MODELS)))
 $(error Invalid model '$(model)', valid options are: $(ALL_MODELS))
 endif
@@ -21,17 +23,22 @@ MINIWARE_HAL_INC_DIR = ./Core/BSP/Miniware/Vendor/STM32F1xx_HAL_Driver/Inc
 MINIWARE_HAL_LEGACY_INC_DIR = ./Core/BSP/Miniware/Vendor/STM32F1xx_HAL_Driver/Inc/Legacy
 FRTOS_CMIS_INC_DIR = ./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS
 FRTOS_INC_DIR = ./Middlewares/Third_Party/FreeRTOS/Source/include
-MINIWARE_STARTUP_DIR = ./Startup
+STARTUP_DIR = ./Startup
 DRIVER_INC_DIR =./Core/Drivers
 BSP_INC_DIR = ./Core/BSP
 THREADS_INC_DIR = ./Core/Threads
 MINIWARE_INC_DIR = ./Core/BSP/Miniware
 PINE_INC_DIR = ./Core/BSP/Pine64
+OTTER_INC_DIR = ./Core/BSP/Otter-Iron
 PINE_VENDOR_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include
 PINE_BOARD_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Board/pinecil/Include
 PINE_VENDOR_USB_INC_DIR = ./Core/BSP/Pine64/Vendor/SoC/gd32vf103/Common/Include/Usb
 PINE_NMSIS_INC_DIR = ./Core/BSP/Pine64/Vendor/NMSIS/Core/Include
 PINE_FREERTOS_PORT_INC_DIR = ./Core/BSP/Pine64/Vendor/OS/FreeRTOS/Source/portable/GCC
+OTTER_IRON_INC_CMSIS_DEVICE = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Device/ST/STM32F1xx/Include
+OTTER_IRON_CMSIS_CORE_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/CMSIS/Include
+OTTER_IRON_HAL_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/STM32F0xx_HAL_Driver/Inc
+OTTER_IRON_HAL_LEGACY_INC_DIR = ./Core/BSP/Otter-Iron/Vendor/STM32F0xx_HAL_Driver/Inc/Legacy
 SOURCE_THREADS_DIR = ./Core/Threads
 SOURCE_CORE_DIR = ./Core/Src
 SOURCE_DRIVERS_DIR = ./Core/Drivers
@@ -52,7 +59,7 @@ DEVICE_INCLUDES = -I$(MINIWARE_INC_DIR) \
 	-I$(MINIWARE_HAL_INC_DIR)	\
 	-I$(MINIWARE_HAL_LEGACY_INC_DIR)
 DEVICE_BSP_DIR = ./Core/BSP/Miniware
-S_SRCS := $(shell find $(MINIWARE_STARTUP_DIR) -type f -name '*.S')
+S_SRCS := $(shell find $(STARTUP_DIR) -type f -name 'startup_stm32f1*.S')
 LDSCRIPT=stm32f103.ld
 DEV_GLOBAL_DEFS= -D STM32F103T8Ux -D STM32F1 -D STM32 -D USE_HAL_DRIVER -D STM32F103xB -D USE_RTOS_SYSTICK -D GCC_ARMCM3		\
 		-D ARM_MATH_CM3 	\
@@ -98,6 +105,34 @@ DEV_AFLAGS= -nostartfiles -ffreestanding -fno-common -Os -flto
 DEV_GLOBAL_DEFS=
 DEV_CFLAGS= -MMD -MP -MF "$(@:%.o=%.d)" -MT "$@"
 DEV_CXXFLAGS= -MMD -MP -MF "$(@:%.o=%.d)" -MT "$@"
+endif
+
+ifeq ($(model),$(filter $(model),$(ALL_OTTER_IRON_MODELS)))
+$(info Building for Otter Iron )
+DEVICE_INCLUDES = -I$(MINIWARE_INC_DIR) \
+	-I$(OTTER_IRON_INC_CMSIS_DEVICE)\
+	-I$(OTTER_IRON_CMSIS_CORE_INC_DIR)	\
+	-I$(OTTER_IRON_HAL_INC_DIR)	\
+	-I$(OTTER_IRON_HAL_LEGACY_INC_DIR)
+DEVICE_BSP_DIR = ./Core/BSP/Otter-Iron
+S_SRCS := $(shell find $(STARTUP_DIR) -type f -name 'startup_stm32f0*.S')
+LDSCRIPT=STM32F072C8Tx_FLASH.ld
+DEV_GLOBAL_DEFS= -D STM32F072C8Tx -D STM32F0 -D STM32 -D USE_HAL_DRIVER -D DSTM32F072xB -D USE_RTOS_SYSTICK -D GCC_ARMCM0		\
+		-D ARM_MATH_CM0 	\
+		-D STM32F07X_MD
+DEV_LDFLAGS=-lm -Wl,--gc-sections 
+DEV_AFLAGS=
+DEV_CFLAGS= -D GCC_ARMCM0		\
+		-D ARM_MATH_CM0 	\
+		-D STM32F07X_MD		
+DEV_CXXFLAGS= -D GCC_ARMCM3		\
+		-D ARM_MATH_CM0 	\
+		-D STM32F07X_MD		
+CPUFLAGS= -mcpu=cortex-m0     \
+		  -mthumb 			\
+		  -mfloat-abi=soft
+flash_size=64k
+bootldr_size=0x4000
 endif
 
 INCLUDES = -I$(APP_INC_DIR)	\
@@ -150,7 +185,7 @@ COMPILER=gcc
 # arm-none-eabi is the general ARM compiler, 
 # riscv-none-embed is the riscv compiler
 # riscv-nuclei-elf is the nuclei tuned one for their cores
-ifeq ($(model),$(filter $(model),$(ALL_MINIWARE_MODELS)))
+ifeq ($(model),$(filter $(model),$(ARM_MODELS)))
 COMPILER_PREFIX=arm-none-eabi
 endif
 ifeq ($(model),$(ALL_PINE_MODELS))
