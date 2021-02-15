@@ -180,3 +180,8 @@ const uint8_t  tipResistance = 45; // x10 ohms, 4.5 typical for ts80 tips
 const uint32_t tipMass       = 40;
 const uint8_t  tipResistance = 45; // x10 ohms, 4.5 typical for ts80 tips
 #endif
+
+#ifdef MODEL_OtterIron
+const uint32_t tipMass       = 40;
+const uint8_t  tipResistance = 40; // x10 ohms
+#endif

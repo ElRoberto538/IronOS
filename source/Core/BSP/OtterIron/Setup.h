@@ -27,6 +27,9 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim); // Since the hal header file 
 
 void Error_Handler(void);
 
+
+uint16_t ADC_raw[4];
+
 #ifdef __cplusplus
 }
 #endif

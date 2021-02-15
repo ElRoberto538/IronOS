@@ -123,24 +123,13 @@ uint16_t getHandleTemperature() {
 }
 
 uint16_t getTipInstantTemperature() {
-  uint16_t sum = 0; // 12 bit readings * 8 -> 15 bits
-  uint16_t readings[8];
-  // Looking to reject the highest outlier readings.
-  // As on some hardware these samples can run into the op-amp recovery time
-  // Once this time is up the signal stabilises quickly, so no need to reject minimums
-  readings[0] = hadc1.Instance->JDR1;
-  readings[1] = hadc1.Instance->JDR2;
-  readings[2] = hadc1.Instance->JDR3;
-  readings[3] = hadc1.Instance->JDR4;
-  readings[4] = hadc2.Instance->JDR1;
-  readings[5] = hadc2.Instance->JDR2;
-  readings[6] = hadc2.Instance->JDR3;
-  readings[7] = hadc2.Instance->JDR4;
-
-  for (int i = 0; i < 8; i++) {
-    sum += readings[i];
-  }
-  return sum; // 8x over sample
+  //TODO: calibaration
+  float calibaration_offset = 120;
+  float calibaration_coefficient = 92;
+  float tref = (((ADC_raw[3]/4095.0)*3.3)-0.5)/0.01;
+  float ttip = ((ADC_raw[1]-calibaration_offset)*calibaration_coefficient)/1000+tref;
+  
+  return (uint16_t)ttip;
 }
 
 uint16_t getTipRawTemp(uint8_t refresh) {

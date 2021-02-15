@@ -19,9 +19,6 @@
 #ifdef MODEL_OtterIron
 #define POW_PD
 #define TEMP_NTC
-#define I2C_SOFT
-#define LIS_ORI_FLIP
-#define OLED_FLIP
 #define BATTFILTERDEPTH 8
 #endif
 

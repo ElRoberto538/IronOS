@@ -5,55 +5,67 @@
 #include "stm32f0xx.h"
 #include "stm32f0xx_hal.h"
 
-extern TIM_HandleTypeDef htim1; // used for the systick
+extern TIM_HandleTypeDef htim1;
+
+/* USER CODE BEGIN EV */
+
+/* USER CODE END EV */
 
 /******************************************************************************/
-/*            Cortex-M0 Processor Interruption and Exception Handlers         */
+/*           Cortex-M0 Processor Interruption and Exception Handlers          */
 /******************************************************************************/
+/**
+  * @brief This function handles Non maskable interrupt.
+  */
+void NMI_Handler(void)
+{
+  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
 
-void NMI_Handler(void) {}
+  /* USER CODE END NonMaskableInt_IRQn 0 */
+  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+  while (1)
+  {
+  }
+  /* USER CODE END NonMaskableInt_IRQn 1 */
+}
 
-// We have the assembly for a breakpoint trigger here to halt the system when a debugger is connected
-// Hardfault handler, often a screwup in the code
-void HardFault_Handler(void) {}
+/**
+  * @brief This function handles Hard fault interrupt.
+  */
+void HardFault_Handler(void)
+{
+  /* USER CODE BEGIN HardFault_IRQn 0 */
 
-// Memory management unit had an error
-void MemManage_Handler(void) {}
-
-// Prefetcher or busfault occured
-void BusFault_Handler(void) {}
-
-void UsageFault_Handler(void) {}
-
-void DebugMon_Handler(void) {}
-
-// Systick is used by FreeRTOS tick
-void SysTick_Handler(void) { osSystickHandler(); }
+  /* USER CODE END HardFault_IRQn 0 */
+  while (1)
+  {
+    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+    /* USER CODE END W1_HardFault_IRQn 0 */
+  }
+}
 
 /******************************************************************************/
 /* STM32F0xx Peripheral Interrupt Handlers                                    */
 /* Add here the Interrupt Handlers for the used peripherals.                  */
 /* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file.					                      */
+/* please refer to the startup file (startup_stm32f0xx.s).                    */
 /******************************************************************************/
 
-// DMA used to move the ADC readings into system ram
-void DMA1_Channel1_IRQHandler(void) { HAL_DMA_IRQHandler(&hdma_adc1); }
-// ADC interrupt used for DMA
-void ADC1_2_IRQHandler(void) { HAL_ADC_IRQHandler(&hadc1); }
+/**
+  * @brief This function handles TIM1 break, update, trigger and commutation interrupts.
+  */
+void TIM1_BRK_UP_TRG_COM_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM1_BRK_UP_TRG_COM_IRQn 0 */
 
-// Timer 1 has overflowed, used for HAL ticks
-void TIM1_UP_IRQHandler(void) { HAL_TIM_IRQHandler(&htim1); }
-// Timer 3 is used for the PWM output to the tip
-void TIM3_IRQHandler(void) { HAL_TIM_IRQHandler(&htim3); }
+  /* USER CODE END TIM1_BRK_UP_TRG_COM_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim1);
+  /* USER CODE BEGIN TIM1_BRK_UP_TRG_COM_IRQn 1 */
 
-// Timer 2 is used for co-ordination of PWM & ADC
-void TIM2_IRQHandler(void) { HAL_TIM_IRQHandler(&htim2); }
+  /* USER CODE END TIM1_BRK_UP_TRG_COM_IRQn 1 */
+}
 
-void I2C1_EV_IRQHandler(void) { HAL_I2C_EV_IRQHandler(&hi2c1); }
-void I2C1_ER_IRQHandler(void) { HAL_I2C_ER_IRQHandler(&hi2c1); }
+/* USER CODE BEGIN 1 */
 
-void DMA1_Channel6_IRQHandler(void) { HAL_DMA_IRQHandler(&hdma_i2c1_tx); }
-
-void DMA1_Channel7_IRQHandler(void) { HAL_DMA_IRQHandler(&hdma_i2c1_rx); }
-void EXTI9_5_IRQHandler(void) { HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_9); }
+/* USER CODE END 1 */
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -37,6 +37,8 @@ void Setup_HAL() {
   MX_TIM2_Init();
   MX_USB_PCD_Init();
   MX_IWDG_Init();
+
+  HAL_ADC_Start_DMA(&hadc, (uint32_t *)ADC_raw, 4);
 }
 
 void SystemClock_Config(void)
