@@ -15,7 +15,6 @@ static uint16_t settings_page[512] __attribute__((section(".settings_page")));
 uint8_t flash_save_buffer(const uint8_t *buffer, const uint16_t length) {
   FLASH_EraseInitTypeDef pEraseInit;
   pEraseInit.TypeErase    = FLASH_TYPEERASE_PAGES;
-  pEraseInit.Banks        = FLASH_BANK_1;
   pEraseInit.NbPages      = 1;
   pEraseInit.PageAddress  = (uint32_t)settings_page;
   uint32_t failingAddress = 0;
