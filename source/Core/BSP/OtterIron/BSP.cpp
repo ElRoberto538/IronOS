@@ -147,34 +147,35 @@ uint16_t getInputVoltageX10(uint16_t divisor, uint8_t sample) {
 // Therefore we can divide down from there
 // Multiplying ADC max by 4 for additional calibration options,
 // ideal term is 467
-#ifdef MODEL_TS100
-#define BATTFILTERDEPTH 32
-#else
-#define BATTFILTERDEPTH 8
+// #ifdef MODEL_TS100
+// #define BATTFILTERDEPTH 32
+// #else
+// #define BATTFILTERDEPTH 8
 
-#endif
-  static uint8_t  preFillneeded = 10;
-  static uint32_t samples[BATTFILTERDEPTH];
-  static uint8_t  index = 0;
-  if (preFillneeded) {
-    for (uint8_t i = 0; i < BATTFILTERDEPTH; i++)
-      samples[i] = getADC(1);
-    preFillneeded--;
-  }
-  if (sample) {
-    samples[index] = getADC(1);
-    index          = (index + 1) % BATTFILTERDEPTH;
-  }
-  uint32_t sum = 0;
+// #endif
+//   static uint8_t  preFillneeded = 10;
+//   static uint32_t samples[BATTFILTERDEPTH];
+//   static uint8_t  index = 0;
+//   if (preFillneeded) {
+//     for (uint8_t i = 0; i < BATTFILTERDEPTH; i++)
+//       samples[i] = getADC(1);
+//     preFillneeded--;
+//   }
+//   if (sample) {
+//     samples[index] = getADC(1);
+//     index          = (index + 1) % BATTFILTERDEPTH;
+//   }
+//   uint32_t sum = 0;
 
-  for (uint8_t i = 0; i < BATTFILTERDEPTH; i++)
-    sum += samples[i];
+//   for (uint8_t i = 0; i < BATTFILTERDEPTH; i++)
+//     sum += samples[i];
 
-  sum /= BATTFILTERDEPTH;
-  if (divisor == 0) {
-    divisor = 1;
-  }
-  return sum * 4 / divisor;
+//   sum /= BATTFILTERDEPTH;
+//   if (divisor == 0) {
+//     divisor = 1;
+//   }
+//   return sum * 4 / divisor;
+  return 4;
 }
 
 void setTipPWM(uint8_t pulse) {
@@ -222,101 +223,101 @@ bool tryBetterPWM(uint8_t pwm) {
 // These are called by the HAL after the corresponding events from the system
 // timers.
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+// void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   // Period has elapsed
-  if (htim->Instance == TIM2) {
-    // we want to turn on the output again
-    PWMSafetyTimer--;
-    // We decrement this safety value so that lockups in the
-    // scheduler will not cause the PWM to become locked in an
-    // active driving state.
-    // While we could assume this could never happen, its a small price for
-    // increased safety
-    htim2.Instance->CCR4 = pendingPWM;
-    if (htim2.Instance->CCR4 && PWMSafetyTimer) {
-      HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-    } else {
-      HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
-    }
-  } else if (htim->Instance == TIM1) {
-    // STM uses this for internal functions as a counter for timeouts
-    HAL_IncTick();
-  }
-}
+  // if (htim->Instance == TIM2) {
+  //   // we want to turn on the output again
+  //   PWMSafetyTimer--;
+  //   // We decrement this safety value so that lockups in the
+  //   // scheduler will not cause the PWM to become locked in an
+  //   // active driving state.
+  //   // While we could assume this could never happen, its a small price for
+  //   // increased safety
+  //   htim2.Instance->CCR4 = pendingPWM;
+  //   if (htim2.Instance->CCR4 && PWMSafetyTimer) {
+  //     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  //   } else {
+  //     HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+  //   }
+  // } else if (htim->Instance == TIM1) {
+  //   // STM uses this for internal functions as a counter for timeouts
+  //   HAL_IncTick();
+  // }
+// }
 
 void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim) {
   // This was a when the PWM for the output has timed out
   if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_4) {
-    HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
+    // HAL_TIM_PWM_Stop(&htim3, TIM_CHANNEL_1);
   }
 }
 void unstick_I2C() {
-  GPIO_InitTypeDef GPIO_InitStruct;
-  int              timeout     = 100;
-  int              timeout_cnt = 0;
+  // GPIO_InitTypeDef GPIO_InitStruct;
+  // int              timeout     = 100;
+  // int              timeout_cnt = 0;
 
-  // 1. Clear PE bit.
-  hi2c1.Instance->CR1 &= ~(0x0001);
-  /**I2C1 GPIO Configuration
-   PB6     ------> I2C1_SCL
-   PB7     ------> I2C1_SDA
-   */
-  //  2. Configure the SCL and SDA I/Os as General Purpose Output Open-Drain, High level (Write 1 to GPIOx_ODR).
-  GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_OD;
-  GPIO_InitStruct.Pull  = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  // // 1. Clear PE bit.
+  // hi2c1.Instance->CR1 &= ~(0x0001);
+  // /**I2C1 GPIO Configuration
+  //  PB6     ------> I2C1_SCL
+  //  PB7     ------> I2C1_SDA
+  //  */
+  // //  2. Configure the SCL and SDA I/Os as General Purpose Output Open-Drain, High level (Write 1 to GPIOx_ODR).
+  // GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_OD;
+  // GPIO_InitStruct.Pull  = GPIO_PULLUP;
+  // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 
-  GPIO_InitStruct.Pin = SCL_Pin;
-  HAL_GPIO_Init(SCL_GPIO_Port, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
+  // GPIO_InitStruct.Pin = SCL_Pin;
+  // HAL_GPIO_Init(SCL_GPIO_Port, &GPIO_InitStruct);
+  // HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
 
-  GPIO_InitStruct.Pin = SDA_Pin;
-  HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
-  HAL_GPIO_WritePin(SDA_GPIO_Port, SDA_Pin, GPIO_PIN_SET);
+  // GPIO_InitStruct.Pin = SDA_Pin;
+  // HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
+  // HAL_GPIO_WritePin(SDA_GPIO_Port, SDA_Pin, GPIO_PIN_SET);
 
-  while (GPIO_PIN_SET != HAL_GPIO_ReadPin(SDA_GPIO_Port, SDA_Pin)) {
-    // Move clock to release I2C
-    HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_RESET);
-    asm("nop");
-    asm("nop");
-    asm("nop");
-    asm("nop");
-    HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
+  // while (GPIO_PIN_SET != HAL_GPIO_ReadPin(SDA_GPIO_Port, SDA_Pin)) {
+  //   // Move clock to release I2C
+  //   HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_RESET);
+  //   asm("nop");
+  //   asm("nop");
+  //   asm("nop");
+  //   asm("nop");
+  //   HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
 
-    timeout_cnt++;
-    if (timeout_cnt > timeout)
-      return;
-  }
+  //   timeout_cnt++;
+  //   if (timeout_cnt > timeout)
+  //     return;
+  // }
 
-  // 12. Configure the SCL and SDA I/Os as Alternate function Open-Drain.
-  GPIO_InitStruct.Mode  = GPIO_MODE_AF_OD;
-  GPIO_InitStruct.Pull  = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  // // 12. Configure the SCL and SDA I/Os as Alternate function Open-Drain.
+  // GPIO_InitStruct.Mode  = GPIO_MODE_AF_OD;
+  // GPIO_InitStruct.Pull  = GPIO_PULLUP;
+  // GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 
-  GPIO_InitStruct.Pin = SCL_Pin;
-  HAL_GPIO_Init(SCL_GPIO_Port, &GPIO_InitStruct);
+  // GPIO_InitStruct.Pin = SCL_Pin;
+  // HAL_GPIO_Init(SCL_GPIO_Port, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = SDA_Pin;
-  HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
+  // GPIO_InitStruct.Pin = SDA_Pin;
+  // HAL_GPIO_Init(SDA_GPIO_Port, &GPIO_InitStruct);
 
-  HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(SDA_GPIO_Port, SDA_Pin, GPIO_PIN_SET);
+  // HAL_GPIO_WritePin(SCL_GPIO_Port, SCL_Pin, GPIO_PIN_SET);
+  // HAL_GPIO_WritePin(SDA_GPIO_Port, SDA_Pin, GPIO_PIN_SET);
 
-  // 13. Set SWRST bit in I2Cx_CR1 register.
-  hi2c1.Instance->CR1 |= 0x8000;
+  // // 13. Set SWRST bit in I2Cx_CR1 register.
+  // hi2c1.Instance->CR1 |= 0x8000;
 
-  asm("nop");
+  // asm("nop");
 
-  // 14. Clear SWRST bit in I2Cx_CR1 register.
-  hi2c1.Instance->CR1 &= ~0x8000;
+  // // 14. Clear SWRST bit in I2Cx_CR1 register.
+  // hi2c1.Instance->CR1 &= ~0x8000;
 
-  asm("nop");
+  // asm("nop");
 
-  // 15. Enable the I2C peripheral by setting the PE bit in I2Cx_CR1 register
-  hi2c1.Instance->CR1 |= 0x0001;
+  // // 15. Enable the I2C peripheral by setting the PE bit in I2Cx_CR1 register
+  // hi2c1.Instance->CR1 |= 0x0001;
 
-  // Call initialization function.
-  HAL_I2C_Init(&hi2c1);
+  // // Call initialization function.
+  // HAL_I2C_Init(&hi2c1);
 }
 
 uint8_t getButtonA() { return HAL_GPIO_ReadPin(KEY_A_GPIO_Port, KEY_A_Pin) == GPIO_PIN_RESET ? 1 : 0; }

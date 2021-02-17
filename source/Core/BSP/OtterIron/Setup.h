@@ -14,7 +14,7 @@ extern "C" {
 
 #include "stm32f0xx_hal.h"
 
-extern ADC_HandleTypeDef hadc;
+extern ADC_HandleTypeDef hadc1;
 extern I2C_HandleTypeDef hi2c1;
 
 extern IWDG_HandleTypeDef hiwdg;
@@ -28,7 +28,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim); // Since the hal header file 
 void Error_Handler(void);
 
 
-uint16_t ADC_raw[4];
+extern uint16_t ADC_raw[4];
 
 #ifdef __cplusplus
 }
