@@ -17,7 +17,7 @@
 
 
 #ifdef MODEL_OtterIron
-#define POW_PD
+//#define POW_PD
 #define TEMP_NTC
 #define BATTFILTERDEPTH 8
 #endif

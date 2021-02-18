@@ -122,7 +122,7 @@ DEV_LDFLAGS=-lm -Wl,--gc-sections
 DEV_AFLAGS=
 DEV_CFLAGS= -D GCC_ARMCM0 -D ARM_MATH_CM0 -D STM32F07X_MD		
 DEV_CXXFLAGS= -D GCC_ARMCM0 -D ARM_MATH_CM0 -D STM32F07X_MD		
-CPUFLAGS= -mcpu=cortex-m3 -mthumb -mfloat-abi=soft
+CPUFLAGS= -mcpu=cortex-m0 -mthumb -mfloat-abi=soft
 flash_size=64k
 bootldr_size=0x4000
 endif
